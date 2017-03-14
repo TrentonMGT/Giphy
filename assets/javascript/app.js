@@ -1,5 +1,6 @@
 
 var buttons = ["Donald Trump","Barrack Obama","Will Smith", "Dallas Cowboys"];
+var still;
 //Create a button an add the name to the button
 //put the buttons on the screen
 var addButton = () => {
@@ -19,16 +20,19 @@ var runAjax = function(link){
 	$.ajax({ url: link, method: "Get"})
 	.done(function(response){
 	     //log data
-	    console.log(response);
-		console.log(response.data[0].images.fixed_height.url);
-		console.log(response.data[0].images.fixed_height_still.url);
+	 //    console.log(response);
+		// console.log(response.data[0].images.fixed_height.url);
+		// console.log(response.data[0].images.fixed_height_still.url);
 		//creating a image tag and adding the first/zero index image
 		//and diplaying it to the image
 		for (var i = 0; i < response.data.length ; i+=1) {
 		
 		var image =$("<img>");
 			image.attr({
-				src:response.data[i].images.fixed_height.url
+				src:response.data[i].images.fixed_height.url,
+				"data-animate":response.data[i].images.fixed_height.url,
+				"data-still":response.data[i].images.fixed_height_still.url,
+				"data-name": "still"
 			});
 
 			$('.images').append(image);
@@ -66,3 +70,14 @@ $('.buttoncontainer').on('click', 'button', function(){
 	var link = "http://api.giphy.com/v1/gifs/search?q="+ btnValue +"&api_key=dc6zaTOxFJmzC";
 	runAjax(link);
 });
+
+$(document).on('click', 'img', function(){
+
+		console.log($(this).attr('data-still'));
+		if($(this).attr('data-name') === "still"){
+			$(this).attr("src",$(this).attr('data-still'));
+		}
+
+});
+
+
